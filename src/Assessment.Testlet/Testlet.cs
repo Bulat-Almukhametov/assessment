@@ -22,9 +22,14 @@ public class Testlet
 
     public List<Item> Randomize()
     {
+        var rnd = new Random();
+
         var pretests = Items.Where(i => i.ItemType == ItemTypeEnum.Pretest)
+            .OrderBy(_ => rnd.Next())
             .Take(2);
-        var mix = Items.Where(i => !pretests.Contains(i));
+
+        var mix = Items.Where(i => !pretests.Contains(i))
+            .OrderBy(_ => rnd.Next());
 
         return pretests.Concat(mix).ToList();
     }

@@ -92,6 +92,24 @@ public class TestletTest
         Assert.NotEqual(randomize1.Skip(4), randomize2.Skip(4));
     }
 
+    [Theory]
+    [AutoNData]
+    private void Testlet_ShouldReturnAllItems_WhenRandomize(string testletId)
+    {
+        // Arrange
+        var items = Items(6, 4);
+        var itemIds = items.OrderBy(i => i.ItemId);
+
+        var testlet = new Testlet(testletId, items);
+
+        // Act
+        var randomized = testlet.Randomize()
+            .OrderBy(i => i.ItemId);
+
+        // Assert
+        Assert.Equal(randomized, itemIds);
+    }
+
     #region Private methods
 
     private static List<Item> Items(int operationalsCount, int pretestsCount)

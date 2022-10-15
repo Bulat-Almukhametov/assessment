@@ -26,7 +26,8 @@ public class Testlet
 
         var pretests = Items.Where(i => i.ItemType == ItemTypeEnum.Pretest)
             .OrderBy(_ => rnd.Next())
-            .Take(2);
+            .Take(2)
+            .ToList();
 
         var mix = Items.Where(i => !pretests.Contains(i))
             .OrderBy(_ => rnd.Next());

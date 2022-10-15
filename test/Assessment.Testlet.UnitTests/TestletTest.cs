@@ -18,6 +18,6 @@ public class TestletTest
             .ToList();
 
         // Act
-        var testlet = new Testlet(testletId, items);
+        new Testlet(testletId, items);
     }
 }

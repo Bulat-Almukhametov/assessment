@@ -75,6 +75,23 @@ public class TestletTest
         Assert.NotEqual(randomize1.Take(2), randomize2.Take(2));
     }
 
+    [Theory]
+    [AutoNData]
+    private void Testlet_ShouldRandomizeMixedItems_WhenRandomize(string testletId)
+    {
+        // Arrange
+        var items = Items(6, 4);
+
+        var testlet = new Testlet(testletId, items);
+
+        // Act
+        var randomize1 = testlet.Randomize();
+        var randomize2 = testlet.Randomize();
+
+        // Assert
+        Assert.NotEqual(randomize1.Skip(4), randomize2.Skip(4));
+    }
+
     #region Private methods
 
     private static List<Item> Items(int operationalsCount, int pretestsCount)

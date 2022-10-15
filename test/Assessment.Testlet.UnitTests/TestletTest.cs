@@ -13,8 +13,16 @@ public class TestletTest
     )
     {
         // Arrange
-        var items = Enumerable.Repeat(0, 10)
-            .Select(_ => fixture.Create<Item>())
+        var operationals = Enumerable.Repeat(ItemTypeEnum.Operational, 6);
+        var pretests = Enumerable.Repeat(ItemTypeEnum.Pretest, 4);
+        var items = operationals.Concat(pretests)
+            .Select(itemType =>
+            {
+                var item = fixture.Create<Item>();
+                item.ItemType = itemType;
+
+                return item;
+            })
             .ToList();
 
         // Act

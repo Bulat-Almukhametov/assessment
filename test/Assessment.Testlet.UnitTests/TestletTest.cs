@@ -59,6 +59,40 @@ public class TestletTest
             .All(i => i.ItemType == ItemTypeEnum.Pretest));
     }
 
+    [Theory]
+    [AutoNData]
+    private void Testlet_ShouldRandomizeFirst2PretestItems_WhenRandomize(string testletId)
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var pretests = Enumerable.Repeat(ItemTypeEnum.Pretest, 4)
+            .Select(itemType =>
+            {
+                var item = fixture.Create<Item>();
+                item.ItemType = itemType;
+
+                return item;
+            })
+            .ToList();
+        var operationals = Enumerable.Repeat(ItemTypeEnum.Operational, 6)
+            .Select(itemType =>
+            {
+                var item = fixture.Create<Item>();
+                item.ItemType = itemType;
+
+                return item;
+            });
+        var items = pretests.Concat(operationals).ToList();
+
+        var testlet = new Testlet(testletId, items);
+
+        // Act
+        var firstPretests = testlet.Randomize();
+
+        // Assert
+        Assert.NotEqual(firstPretests.Take(2), pretests.Take(2));
+    }
+
     #region Private methods
 
     private static List<Item> Items(int operationalsCount, int pretestsCount)

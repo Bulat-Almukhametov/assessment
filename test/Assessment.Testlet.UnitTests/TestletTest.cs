@@ -42,15 +42,34 @@ public class TestletTest
         Assert.Throws<ArgumentException>(act);
     }
 
+    [Theory]
+    [AutoNData]
+    private void Testlet_ShouldReturnFirst2PretestItems_WhenRandomize(string testletId)
+    {
+        // Arrange
+        var items = Items(6, 4);
+        var testlet = new Testlet(testletId, items);
+
+        // Act
+        var randomized = testlet.Randomize();
+
+        // Assert
+        Assert.True(randomized
+            .Take(2)
+            .All(i => i.ItemType == ItemTypeEnum.Pretest));
+    }
+
     #region Private methods
 
     private static List<Item> Items(int operationalsCount, int pretestsCount)
     {
         var fixture = new Fixture();
+        var rnd = new Random();
 
         var operationals = Enumerable.Repeat(ItemTypeEnum.Operational, operationalsCount);
         var pretests = Enumerable.Repeat(ItemTypeEnum.Pretest, pretestsCount);
         var items = operationals.Concat(pretests)
+            .OrderBy(_ => rnd.Next())
             .Select(itemType =>
             {
                 var item = fixture.Create<Item>();

@@ -13,17 +13,7 @@ public class TestletTest
     )
     {
         // Arrange
-        var operationals = Enumerable.Repeat(ItemTypeEnum.Operational, 6);
-        var pretests = Enumerable.Repeat(ItemTypeEnum.Pretest, 4);
-        var items = operationals.Concat(pretests)
-            .Select(itemType =>
-            {
-                var item = fixture.Create<Item>();
-                item.ItemType = itemType;
-
-                return item;
-            })
-            .ToList();
+        var items = Items(6, 4);
 
         // Act
         new Testlet(testletId, items);
@@ -39,11 +29,25 @@ public class TestletTest
     public void Testlet_ShouldThrowArgumentException_WhenIncorrectNumberOfItemsWerePassed(
         int operationalsCount,
         int pretestsCount,
-        string testletId,
-        Fixture fixture
+        string testletId
     )
     {
         // Arrange
+        var items = Items(operationalsCount, pretestsCount);
+
+        // Act
+        var act = () => new Testlet(testletId, items);
+
+        // Arrange
+        Assert.Throws<ArgumentException>(act);
+    }
+
+    #region Private methods
+
+    private static List<Item> Items(int operationalsCount, int pretestsCount)
+    {
+        var fixture = new Fixture();
+
         var operationals = Enumerable.Repeat(ItemTypeEnum.Operational, operationalsCount);
         var pretests = Enumerable.Repeat(ItemTypeEnum.Pretest, pretestsCount);
         var items = operationals.Concat(pretests)
@@ -56,10 +60,8 @@ public class TestletTest
             })
             .ToList();
 
-        // Act
-        var act = () => new Testlet(testletId, items);
-
-        // Arrange
-        Assert.Throws<ArgumentException>(act);
+        return items;
     }
+
+    #endregion
 }

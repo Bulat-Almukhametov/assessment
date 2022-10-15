@@ -11,10 +11,10 @@ public class Testlet
 
     public Testlet(string testletId, List<Item> items)
     {
-        if (items.Count != 10) throw new ArgumentException("Items count should be 10");
+        if (items.Count != 10) throw new ArgumentException("Items count should be 10.");
 
         if (items.Count(i => i.ItemType == ItemTypeEnum.Operational) != 6)
-            throw new ArgumentException("Operational items count should be 6");
+            throw new ArgumentException("Operational items count should be 6.");
 
         TestletId = testletId;
         Items = items;

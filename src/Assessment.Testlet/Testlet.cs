@@ -5,7 +5,7 @@
 /// </summary>
 public class Testlet
 {
-    private List<Item> Items;
+    private readonly List<Item> Items;
 
     public string TestletId;
 
@@ -22,8 +22,10 @@ public class Testlet
 
     public List<Item> Randomize()
     {
-//Items private collection has 6 Operational and 4 Pretest Items. Randomize the order of these items as per the requirement (with TDD)
-//The assignment will be reviewed on the basis of – Tests written first, Correct logic, Well structured & clean readable code.
-        throw new NotImplementedException();
+        var pretests = Items.Where(i => i.ItemType == ItemTypeEnum.Pretest)
+            .Take(2);
+        var mix = Items.Where(i => !pretests.Contains(i));
+
+        return pretests.Concat(mix).ToList();
     }
 }

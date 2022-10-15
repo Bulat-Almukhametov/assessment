@@ -8,8 +8,7 @@ public class TestletTest
     [Theory]
     [AutoNData]
     public void Testlet_ShouldHave10Items(
-        string testletId,
-        Fixture fixture
+        string testletId
     )
     {
         // Arrange
@@ -64,33 +63,16 @@ public class TestletTest
     private void Testlet_ShouldRandomizeFirst2PretestItems_WhenRandomize(string testletId)
     {
         // Arrange
-        var fixture = new Fixture();
-        var pretests = Enumerable.Repeat(ItemTypeEnum.Pretest, 4)
-            .Select(itemType =>
-            {
-                var item = fixture.Create<Item>();
-                item.ItemType = itemType;
-
-                return item;
-            })
-            .ToList();
-        var operationals = Enumerable.Repeat(ItemTypeEnum.Operational, 6)
-            .Select(itemType =>
-            {
-                var item = fixture.Create<Item>();
-                item.ItemType = itemType;
-
-                return item;
-            });
-        var items = pretests.Concat(operationals).ToList();
+        var items = Items(6, 4);
 
         var testlet = new Testlet(testletId, items);
 
         // Act
-        var firstPretests = testlet.Randomize();
+        var randomize1 = testlet.Randomize();
+        var randomize2 = testlet.Randomize();
 
         // Assert
-        Assert.NotEqual(firstPretests.Take(2), pretests.Take(2));
+        Assert.NotEqual(randomize1.Take(2), randomize2.Take(2));
     }
 
     #region Private methods
